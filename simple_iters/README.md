@@ -6,3 +6,5 @@ Solve this system:
 | (N - 1.9)*x1 + (N + 4.002)*x2 + (16 + 4*N)*x3 = 9*N + 30.1
 ```
 using simple iteration method
+
+N is your number in class journal, for me it was 8
