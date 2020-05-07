@@ -4,6 +4,41 @@ import numpy as np
 from numpy.linalg import norm
 
 
+def ask_n():
+    print('На данный момент поддерживаются'
+          ' только такие системы, в которых'
+          ' в которых кол-во уравнений равно'
+          ' кол-ву неизвестных')
+    print('Сколько уравнений в системе (2-10)?')
+
+    n = int(input())
+    while n < 2 or n > 10:
+        n = int(input('От 2 до 10: '))
+
+    return n
+
+
+def ask_coeffs():
+    coeffs = []
+    for i in range(1, N+1):
+        print('Введите через пробел коэффициенты'
+              ' уравнения номер', i)
+        coeffs.append(list(map(
+            prep,
+            input().split()
+        )))
+        assert len(coeffs[-1]) == N, 'Неверное кол-во коэф-ов'
+
+    return coeffs
+
+
+def ask_free():
+    print('Введите через пробел свободные коэф-ты')
+    free = list(map(prep, input().split()))
+    assert len(free) == N, 'Неверное кол-во коэф-ов'
+    return free
+
+
 def build_eq(coeffs, free):
     return Eq(
         sum([coeffs[i] * x[i+1] for i in range(4)]),
@@ -11,8 +46,8 @@ def build_eq(coeffs, free):
     )
 
 
-def prep(v):
-    return round(float(v), 5)
+def prep(n):
+    return round(float(n), 5)
 
 
 def build_AB():
@@ -105,15 +140,18 @@ def main():
 
 eps = .01
 
+N = ask_n()
+
 x = {
-    i: symbols(f'x{i}') for i in range(1, 5)
+    i: symbols(f'x{i}') for i in range(1, N+1)
 }
 
+coeffs = ask_coeffs()
+free = ask_free()
+
 eq = {
-    1: build_eq((-.77, -.04, .21, -.18), -1.24),
-    2: build_eq((.25, -1.23, .16, -.09), 1.12),
-    3: build_eq((-.21, .16, .8, -.13), 2.56),
-    4: build_eq((.15, -.31, .06, 1.12), -.77),
+    i+1: build_eq(coeffs[i], free[i]) \
+        for i in range(N)
 }
 
 sol = {
