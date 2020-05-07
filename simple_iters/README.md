@@ -1,19 +1,29 @@
-# It solves!
+# Работает!
 
-### Ru
+# Как использовать?
 
-Я думаю, что этот скрипт 
-решит любую СЛАУ.
+1. Если установлен git
+```
+$ git clone https://github.com/ibrag8998/nmmp.git
+$ cd nmmp
+$ python3 simple_iters
+```
+
+2. Если git почему-то не установлен
+(и стоит винда)
+    1. Скачать этот репозиторий
+(зеленая кнопка Clone or download)
+    2. Разархивировать
+    3. Перейти в папку, куда все
+разархивировали
+    4. Перейти в папку simple\_iters
+    5. Запустить файл \_\_main\_\_.py
+    6. (Если python не установлен, не заработает)
+
+## Ru
+
+Вроде как решает любую СЛАУ.
 
 Необходимо добавить возможность вводить
 коэффициенты с клавиатуры.
-
-### En
-
-I think this script will solve any system of linear 
-equations
-
-## TODO
-
-Allow user input coefficients
 
