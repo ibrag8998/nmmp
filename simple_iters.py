@@ -36,9 +36,7 @@ def mkiter():
         prep(
             sol[i].subs(
                 [(x[j], xmx[-1][j-1]) for j in range(1, 5)]
-            )
-        ) for i in range(1, 5)
-    ])
+            )) for i in range(1, 5)])
 
 
 def intro():
@@ -75,7 +73,6 @@ def mkiters():
     i = 0
     while prep(norm(xmx[-1] - xmx[-2], 1)) > eps:
         i += 1
-
         print('Итерация', i)
         print('===========')
 
@@ -91,15 +88,14 @@ def mkiters():
 def main():
     intro()
 
-    input('Нажмите Enter чтоб начать итерирование')
+    input('Нажмите Enter для начала итерирования')
     print('='*21)
     print(' НАЧАЛО ИТЕРИРОВАНИЯ ')
     print('='*21, end='\n\n\n')
 
     mkiters()
 
-    print('Разность нормы меньше eps, конец итерирования')
-
+    print('Норма разности меньше eps, конец итерирования', end='\n\n')
     print('=============')
     print('=== ОТВЕТ ===')
     print('=============', end='\n\n')

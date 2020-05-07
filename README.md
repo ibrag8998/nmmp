@@ -1,10 +1,33 @@
-# About
+This repo only in Russian
 
-This is repo where I want to store all my completed
-college tasks on subject "numerical programming and
-mathematical programming"
-Each directory is a task with solution and README.md
+# Работает!
 
-Sometimes I am so lazy to refactor my code, especially
-old code, sorry :D
+# Как использовать?
+
+1. Если установлен git
+
+```
+$ git clone https://github.com/ibrag8998/nmmp.git
+$ cd nmmp
+$ pip install -r requirements.txt
+$ python3 simple_iters.py
+```
+
+2. Если git почему-то не установлен
+(и стоит винда)
+    1. Скачать этот репозиторий
+(зеленая кнопка Clone or download
+на главной странице репозитория)
+    2. Разархивировать
+    3. Дальше в командной строке
+
+```
+$ cd nmmp
+$ pip install -r requirements.txt
+$ py simple_iters.py
+```
+
+P.S. Я давно не сидел за виндой,
+напишите, если какие-то проблемы,
+разберемся, мой номер у вас есть)
 
