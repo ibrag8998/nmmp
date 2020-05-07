@@ -4,39 +4,14 @@ import numpy as np
 from numpy.linalg import norm
 
 
-def ask_n():
-    print('На данный момент поддерживаются'
-          ' только такие системы, в которых'
-          ' в которых кол-во уравнений равно'
-          ' кол-ву неизвестных')
-    print('Сколько уравнений в системе (2-10)?')
-
-    n = int(input())
-    while n < 2 or n > 10:
-        n = int(input('От 2 до 10: '))
-
-    return n
-
-
-def ask_coeffs():
-    coeffs = []
-    for i in range(1, N+1):
-        print('Введите через пробел коэффициенты'
-              ' уравнения номер', i)
-        coeffs.append(list(map(
-            prep,
-            input().split()
-        )))
-        assert len(coeffs[-1]) == N, 'Неверное кол-во коэф-ов'
-
-    return coeffs
-
-
-def ask_free():
-    print('Введите через пробел свободные коэф-ты')
-    free = list(map(prep, input().split()))
-    assert len(free) == N, 'Неверное кол-во коэф-ов'
-    return free
+def ask_method():
+    met = None
+    while met not in ['1', '2']:
+        print('Выберите метод:\n'
+              '1) Простые итерации\n'
+              '2) Метод Зейнделя')
+        met = input()
+    return met
 
 
 def build_eq(coeffs, free):
@@ -66,12 +41,27 @@ def build_AB():
     return A, B
 
 
-def mkiter():
+def mkiter_simple():
     return np.array([
         prep(
             sol[i].subs(
-                [(x[j], xmx[-1][j-1]) for j in range(1, 5)]
-            )) for i in range(1, 5)])
+                [(x[j], xmx[-1][j-1]) for j in range(1, N+1)]
+            )
+        ) for i in range(1, N+1)
+    ])
+
+
+def mkiter_zndl():
+    new_x = [0] * N
+    xmx_stream = xmx[-1].tolist().copy()
+    for i in range(N):
+        new_x[i] = prep(sol[i+1].subs([(x[j], (
+            xmx_stream[j-1] if j-1 < i \
+            else xmx[-1][j-1]
+        )) for j in range(1, N+1)]))
+
+        xmx_stream.append(new_x[i])
+    return np.array(new_x)
 
 
 def intro():
@@ -90,7 +80,7 @@ def intro():
         exit()
 
     # matrix of x -s
-    xmx.append(mkiter())
+    xmx.append(mkiter_simple())
 
     print('x(0) это матрица бета, x(1) равно:')
     print(xmx[1], end='\n\n')
@@ -104,14 +94,17 @@ def intro():
     print(diff_norm, end='\n\n')
 
 
-def mkiters():
+def mkiters(method):
     i = 1
     while prep(norm(xmx[-1] - xmx[-2], 1)) > eps:
         i += 1
         print('Итерация', i)
         print('===========')
 
-        xmx.append(mkiter())
+        xmx.append(
+            mkiter_simple() if method == '1' else mkiter_zndl()
+        )
+
         print(f'x({i}):')
         print(xmx[-1], end='\n\n')
 
@@ -120,7 +113,7 @@ def mkiters():
         print(diff_norm, end='\n\n')
 
 
-def main():
+def main(method='1'):
     intro()
 
     input('Нажмите Enter для начала итерирования')
@@ -128,7 +121,7 @@ def main():
     print(' НАЧАЛО ИТЕРИРОВАНИЯ ')
     print('='*21, end='\n\n\n')
 
-    mkiters()
+    mkiters(method)
 
     print('Норма разности меньше eps, конец итерирования', end='\n\n')
     print('=============')
@@ -138,16 +131,13 @@ def main():
     print('\n'.join([f'x{i+1} = {xmx[-1][i]}' for i in range(4)]))
 
 
+method = ask_method()
+
 eps = .01
 
-
-#N = ask_n()
 N = 4
 
 x = {i: symbols(f'x{i}') for i in range(1, N+1)}
-
-#coeffs = ask_coeffs()
-#free = ask_free()
 
 
 for m, n, p in [
@@ -180,5 +170,5 @@ for m, n, p in [
 
     xmx = [B]
 
-    main()
+    main(method=method)
 
