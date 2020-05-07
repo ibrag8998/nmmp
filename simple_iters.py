@@ -105,7 +105,7 @@ def intro():
 
 
 def mkiters():
-    i = 0
+    i = 2
     while prep(norm(xmx[-1] - xmx[-2], 1)) > eps:
         i += 1
         print('Итерация', i)
