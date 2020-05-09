@@ -16,7 +16,7 @@ def ask_method():
 
 def build_eq(coeffs, free):
     return Eq(
-        sum([coeffs[i] * x[i+1] for i in range(4)]),
+        sum([coeffs[i] * x[i+1] for i in range(N)]),
         free
     )
 
@@ -36,7 +36,7 @@ def build_AB():
         A = np.append(A, x_coeffs)
         B = np.append(B, prep(coeffs.get(1, 0)))
 
-    A = A.reshape((4, 4))
+    A = A.reshape((N, N))
 
     return A, B
 
@@ -64,7 +64,7 @@ def mkiter_zndl():
     return np.array(new_x)
 
 
-def intro():
+def intro(method):
     print('Матрица альфа:')
     print(A, end='\n\n')
 
@@ -80,7 +80,9 @@ def intro():
         exit()
 
     # matrix of x -s
-    xmx.append(mkiter_simple())
+    xmx.append(
+        mkiter_simple() if method == '1' else mkiter_zndl()
+    )
 
     print('x(0) это матрица бета, x(1) равно:')
     print(xmx[1], end='\n\n')
@@ -114,7 +116,7 @@ def mkiters(method):
 
 
 def main(method='1'):
-    intro()
+    intro(method)
 
     input('Нажмите Enter для начала итерирования')
     print('='*21)
@@ -128,7 +130,7 @@ def main(method='1'):
     print('=== ОТВЕТ ===')
     print('=============', end='\n\n')
 
-    print('\n'.join([f'x{i+1} = {xmx[-1][i]}' for i in range(4)]))
+    print('\n'.join([f'x{i+1} = {xmx[-1][i]}' for i in range(N)]))
 
 
 method = ask_method()
@@ -164,7 +166,7 @@ for m, n, p in [
             for i in range(N)}
 
 
-    sol = {i: solve(eq[i], x[i])[0] for i in range(1, 5)}
+    sol = {i: solve(eq[i], x[i])[0] for i in range(1, N+1)}
 
     A, B = build_AB()
 
